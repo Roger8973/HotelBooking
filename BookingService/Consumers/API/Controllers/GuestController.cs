@@ -1,7 +1,7 @@
-﻿using Application.Guest.DTO;
+﻿using Application;
+using Application.Guest.DTO;
 using Application.Guest.Ports;
 using Application.Guest.Requests;
-using Application.Guest.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -32,8 +32,24 @@ namespace API.Controllers
             if (response.Success) 
                 return Created("", request.Data);
 
-            if (response.ErrorCode == Application.ErrosCodes.NOT_FOUND)
-                return BadRequest(response);
+            //Can be moved from controller to method
+            switch (response.ErrorCode)
+            {
+                case ErrosCodes.NOT_FOUND:
+                    return BadRequest(response);
+
+                case ErrosCodes.INVALID_PERSON_ID: 
+                    return BadRequest(response);
+
+                case ErrosCodes.MISSING_REQUIRED_INFORMATION:
+                    return BadRequest(response);
+
+                case ErrosCodes.INVALID_EMAIL:
+                    return BadRequest(response);
+
+                case ErrosCodes.COULD_NOT_STORE_DATA:
+                    return BadRequest(response);
+            }
 
             _logger.LogError("Response with unknown ErroCode Returned", response);
 
