@@ -29,7 +29,7 @@ namespace API.Controllers
 
             var response = await _guestManager.CreateGuest(request);
 
-            if (response.Success) 
+            if (response.Success)
                 return Created("", request.Data);
 
             //Can be moved from controller to method
@@ -38,7 +38,7 @@ namespace API.Controllers
                 case ErrosCodes.NOT_FOUND:
                     return BadRequest(response);
 
-                case ErrosCodes.INVALID_PERSON_ID: 
+                case ErrosCodes.INVALID_PERSON_ID:
                     return BadRequest(response);
 
                 case ErrosCodes.MISSING_REQUIRED_INFORMATION:
@@ -54,6 +54,16 @@ namespace API.Controllers
             _logger.LogError("Response with unknown ErroCode Returned", response);
 
             return BadRequest(500);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<GuestDTO>> Get(int id)
+        {
+            var response = await _guestManager.GetGuest(id);
+
+            if (response.Success) return Ok(response.Data);
+
+            return BadRequest(response);
         }
     }
 }

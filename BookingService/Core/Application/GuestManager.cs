@@ -4,11 +4,6 @@ using Application.Guest.Requests;
 using Application.Guest.Responses;
 using Domain.Exceptions;
 using Domain.Ports;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application
 {
@@ -71,6 +66,27 @@ namespace Application
                     ErrorCode = ErrosCodes.COULD_NOT_STORE_DATA
                 };
             }         
+        }
+
+        public async Task<GuestResponse> GetGuest(int id)
+        {
+            var guest = await _guestRepository.Get(id);
+
+            if (guest == null)
+            {
+                return new GuestResponse
+                {
+                    Success = false,
+                    ErrorCode = ErrosCodes.GUEST_NOT_FOUND,
+                    Message = "No Guest record was found with the given Id."
+                };
+            }
+
+            return new GuestResponse
+            {
+                Success = true,
+                Data = GuestDTO.MapToDTO(guest)
+            };
         }
     }
 }

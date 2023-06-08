@@ -1,9 +1,4 @@
-﻿using Entities =  Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Entities = Domain.Entities;
 using Domain.Enums;
 
 namespace Application.Guest.DTO
@@ -30,6 +25,19 @@ namespace Application.Guest.DTO
                     IdNumber = guestDTO.IdNumber,
                     DocumentType = (DocumentType)guestDTO.IdTypeCode
                 }
+            };
+        }
+
+        public static GuestDTO MapToDTO(Entities.Guest guest)
+        {
+            return new GuestDTO
+            {
+                Id = guest.Id,
+                Name = guest.Name,
+                Surname = guest.SurName,
+                Email = guest.Email,
+                IdNumber = guest.DocumentId.IdNumber,
+                IdTypeCode = (int)guest.DocumentId.DocumentType
             };
         }
     }
