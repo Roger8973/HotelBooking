@@ -20,6 +20,7 @@ namespace Domain.Entities
         private void ValidadeState()
         {
             if (DocumentId == null ||
+                string.IsNullOrEmpty(DocumentId.IdNumber) ||
                 DocumentId.IdNumber.Length <= 3 ||
                 DocumentId.DocumentType == 0)
             {
@@ -36,7 +37,7 @@ namespace Domain.Entities
                 throw new InvalidEmailException();
             }
         }
-        
+
         public async Task Save(IGuestRepository guestRepository)
         {
             this.ValidadeState();
@@ -47,7 +48,7 @@ namespace Domain.Entities
             }
             else
             {
-                 //await guestRepository.Update(this);
+                //await guestRepository.Update(this);
             }
         }
     }
