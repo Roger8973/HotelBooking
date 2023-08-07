@@ -44,7 +44,9 @@ stages:
       inputs:
         command: buildAndPush
         repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
+        dockerfile: $(Build.SourcesDirectory)/BookingService/Consumers/API/Dockerfile
+        buildContext: $(Build.SourcesDirectory)/BookingService
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
+          latest
