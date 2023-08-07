@@ -13,7 +13,7 @@ variables:
   dockerRegistryServiceConnection: '0d6ffd69-cb11-484f-ad9b-3775ad2d1e64'
   imageRepository: 'hotelbooking'
   containerRegistry: 'aecdevdocker.azurecr.io'
-  dockerfilePath: '**/Dockerfile'
+  dockerfilePath: '$(Build.SourcesDirectory)/BookingService/Consumers/API'
   tag: '$(Build.BuildId)'
 
   # Agent VM image name
