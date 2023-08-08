@@ -12,13 +12,11 @@ namespace API.Controllers
     {
         private readonly ILogger<GuestController> _logger;
         private readonly IGuestManager _guestManager;
-        private readonly IConfiguration _configuration;
 
-        public GuestController(ILogger<GuestController> logger, IGuestManager guestManager, IConfiguration configuration)
+        public GuestController(ILogger<GuestController> logger, IGuestManager guestManager)
         {
             _logger = logger;
             _guestManager = guestManager;
-            _configuration = configuration;
         }
 
         [HttpPost]
@@ -61,12 +59,11 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<GuestDTO>> Get(int id)
         {
-            return Ok(new { Valor = _configuration.GetSection("ConnectionStrings:Main").Value });
-            //var response = await _guestManager.GetGuest(id);
+            var response = await _guestManager.GetGuest(id);
 
-            //if (response.Success) return Ok(response.Data);
+            if (response.Success) return Ok(response.Data);
 
-            //return BadRequest(response);
+            return BadRequest(response);
         }
     }
 }
