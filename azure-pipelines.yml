@@ -36,7 +36,7 @@ stages:
         RunAsPreJob: false
     - task: FileTransform@1
       inputs:
-        folderPath:  $(Build.SourcesDirectory)
+        folderPath:  $(Build.SourcesDirectory)/BookingService/Consumers/API
         fileType: 'json'
         targetFiles: 'appsettings.json'
         
