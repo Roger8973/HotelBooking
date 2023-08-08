@@ -34,10 +34,19 @@ stages:
         KeyVaultName: 'segredosaec'
         SecretsFilter: '*'
         RunAsPreJob: false
-    - task: FileTransform@1
+    - task: replacetokens@5
       inputs:
-        folderPath:  $(Build.SourcesDirectory)/BookingService/Consumers/API
-        fileType: 'json'
+        rootDirectory: '$(Build.SourcesDirectory)/BookingService/Consumers/API'
+        encoding: 'auto'
+        tokenPattern: 'default'
+        writeBOM: true
+        actionOnMissing: 'warn'
+        keepToken: false
+        actionOnNoFiles: 'continue'
+        enableTransforms: false
+        enableRecursion: false
+        useLegacyPattern: false
+        enableTelemetry: true
         targetFiles: 'appsettings.json'
         
     - task: Docker@2
