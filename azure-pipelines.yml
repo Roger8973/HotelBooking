@@ -13,7 +13,7 @@ variables:
   dockerRegistryServiceConnection: '0d6ffd69-cb11-484f-ad9b-3775ad2d1e64'
   imageRepository: 'hotelbooking'
   containerRegistry: 'aecdevdocker.azurecr.io'
-  dockerfilePath: '$(Build.SourcesDirectory)/BookingService/Consumers/API/Dockerfile'
+  dockerfilePath: $(Build.SourcesDirectory)/Dockerfile
   tag: '$(Build.BuildId)'
 
   # Agent VM image name
@@ -34,21 +34,28 @@ stages:
         KeyVaultName: 'segredosaec'
         SecretsFilter: '*'
         RunAsPreJob: false
-    - task: FileTransform@1
+    - task: replacetokens@5
       inputs:
-        folderPath: '$(Build.SourcesDirectory)/BookingService/Consumers/API'
-        fileType: 'json'
+        rootDirectory: '$(Build.SourcesDirectory)/BookingService/Consumers/API'
+        encoding: 'auto'
+        tokenPattern: 'default'
+        writeBOM: true
+        actionOnMissing: 'warn'
+        keepToken: false
+        actionOnNoFiles: 'continue'
+        enableTransforms: false
+        enableRecursion: false
+        useLegacyPattern: false
+        enableTelemetry: true
         targetFiles: 'appsettings.json'
         
-    - script: ls -R $(Build.SourcesDirectory)/BookingService
-      displayName: 'List files and directories'
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
         command: buildAndPush
         repository: $(imageRepository)
-        dockerfile: $(Build.SourcesDirectory)/BookingService/Consumers/API/Dockerfile
-        buildContext: $(Build.SourcesDirectory)/BookingService
+        dockerfile: $(Build.SourcesDirectory)/Dockerfile
+        buildContext: $(Build.SourcesDirectory)
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
